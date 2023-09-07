@@ -1,0 +1,21 @@
+{
+  "name": "Laravel_Quicktask",
+  "description": "",
+  "main": "",
+  "authors": [
+    "hieupc-0248 <phan.cong.hieu@sun-asterisk.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hieupc-0248/Laravel_Quicktask",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "template-bower-example": "manhtd-1083/template-bower-example"
+  }
+}
