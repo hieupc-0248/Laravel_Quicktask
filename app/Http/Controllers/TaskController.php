@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -12,23 +14,33 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        return DB::table('tasks')->select('*')->get();
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view('tasks.create', ['user' => $request->user]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        DB::table('tasks')->insert(
+            [
+                'content' => $validated['content'],
+                'user_id' => $validated['user'],
+                'deadline' => $validated['deadline']
+            ]
+        );
+
+        return redirect()->route('users.show', ['user' => $validated['user']]);
     }
 
     /**
@@ -44,7 +56,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -52,7 +64,15 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $validated = $request->validated();
+
+        DB::table('tasks')->update(
+            [
+                'content' => $validated['content'],
+            ]
+        );
+
+        return redirect()->route('users.show', ['user' => $task->user_id]);
     }
 
     /**
@@ -60,6 +80,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        DB::table('tasks')->delete($task->id);
+
+        return redirect()->route('users.show', ['user' => $task->user_id]);
     }
 }
